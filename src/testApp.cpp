@@ -3,7 +3,11 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     
-	ofSetVerticalSync(true);
+    
+    setupGUI();
+    
+    ofEnableSmoothing();
+    ofSetVerticalSync(true);
 	ofBackground(255);
 	ofSetFrameRate(60);
 	ofEnableDepthTest();
@@ -19,7 +23,7 @@ void testApp::setup(){
 	axleColour = ofColor(100.0, 100.0, 100.0, 20.0);
 	pushRodColour =ofColor(100.0, 100.0, 100.0, 100.0);
 	
-	testPoints= MAX_NUM_PTS;
+	testPoints= 200;
 	coreWidth = 100.0;
 	camAmpOld = 1.0;
     
@@ -29,18 +33,26 @@ void testApp::setup(){
 	pushRodHeight = 400.0;
 	pushRodTop = 0.0;
 	
-	camCentreOriginX = 500.0;
-	camCentreOriginY = 700.0;
-	camCentreOriginZ = -100.0;
-	
-	camFROriginX =  (ofGetWidth() * 0.5) + 150.0;
+    rom1CamCentreOrigin = ofVec3f(500.0,700,-100);
+    rom2CamCentreOrigin = ofVec3f((ofGetWidth() * 0.5) + 150.0,700.0,200.0);
+    rom3CamCentreOrigin = ofVec3f((ofGetWidth() * 0.5) -150.0,700.0,200.0);
+    romVCamCentreOrigin = ofVec3f((ofGetWidth() * 0.5),700.0,200.0);
+  
+    
+    rom1Cam.setupPts("Reverse.xml", rom1CamCentreOrigin);
+    rom2Cam.setupPts("Reverse.xml", rom2CamCentreOrigin);
+    rom3Cam.setupPts("Reverse.xml", rom3CamCentreOrigin);
+    romVCam.setupPts("Reverse.xml", romVCamCentreOrigin);
+    
+    
+	/*camFROriginX =  (ofGetWidth() * 0.5) + 150.0;
 	camFROriginY = 700.0;
-	camFROriginZ = 200.0;
-	
+	camFROriginZ = 200.0;*/
+    /*
 	camFLOriginX =  (ofGetWidth() * 0.5) -150.0;
 	camFLOriginY = 700.0;
 	camFLOriginZ = 200.0;
-	
+	*/
 	camFCOriginX =  (ofGetWidth() * 0.5);
 	camFCOriginY = 700.0;
 	camFCOriginZ = 200.0;
@@ -53,10 +65,10 @@ void testApp::setup(){
 	bowlBaseRadius = 250.0;
 	bowlTopRadius = 280.0;
 	bowlHeight = 60.0;
-	bowlOriginX = camCentreOriginX;
+	bowlOriginX = rom1CamCentreOrigin.x;
 	bowlOriginY = 0.0;
 	bowlOriginZ = 0.0;
-	
+	//camPts = rom1Cam.setupPts("Reverse.xml", rom1CamCentreOrigin);
 	
 	drawnCam = 0;
 	rotationHz = 0.01;
@@ -65,77 +77,92 @@ void testApp::setup(){
 	
 	mouseXOld = (int)(ofGetWidth() * 0.5);
 	nicePicRotate = -30.0;
-    
-	
-	
-	//camFLVisMesh.setMode(OF_PRIMITIVE_LINE_STRIP);
-    
-	camCentreVisMesh.enableColors();
+
+//	camCentreVisMesh.enableColors();
 	
 	cogSurface.loadImage( "sunflower.png" );
-	
-	
+
 	nowTime = ofGetElapsedTimef();
 	rotationDegrees = 0.0;
 	
 	//make cams so they're ready to be drawn
-	designCentreCam();
+	//designCentreCam(camPts);
 	designBowl();
 	designFRCam();
 	designFLCam();
 	designFCCam();
-    
-	
+   
 }
 
 void testApp::draw() {
 	
-    
 	ofEnableDepthTest(); //Enable z-buffering
 	ofBackground(255); 	//Set a background
-	
+	ofPushMatrix();
+    
 	ofSetColor(textColour);
-	ofDrawBitmapString("Cam drawing; viewing angle :" + ofToString (nicePicRotate) + " degrees", 5, 15);
 	
+    ofPushMatrix();
 	//easyCam
 	camera.begin();
 	ofRotateY(nicePicRotate);
-	camera.disableMouseInput();
+	//camera.disableMouseInput();
 	
 	ofScale(1,-1,1);
+	niceLight.enable(); //Enabling light source
 	ofTranslate(-ofGetWidth()/2, -ofGetHeight()/2);
+    ofPushMatrix();
+    ofRotateZ(90);
+    ofTranslate(0,0,200);
+    //ofDrawGridPlane(1000);
+    ofPopMatrix();
 	
-	
-	//niceLight.enable(); //Enabling light source
-	
-	//Draw the axles and cams
-	drawCentreCamAxle();
-	drawFrontCamAxle();
+    drawCentreCamAxle();
+    drawFrontCamAxle();
 	//drawBackCamAxle();
 	//drawCams();
-	drawCentreCam();
-	drawFRCam();
-	drawFLCam();
-	drawFCCam();
-	drawPushRods();
-	//drawBowl();
-	drawGuideRods();
+    //drawCentreCam();
+    rom1Cam.draw(ofColor(255,0,0,125),true);
+    rom2Cam.draw(ofColor(255,255,0,125),true);
+    rom3Cam.draw(ofColor(0,0,255,125), true);
+    romVCam.draw(ofColor(40,40,40,125),true);
+	//drawFRCam();
+	//drawFLCam();
+	//drawFCCam();
+	//drawPushRods();
+	drawBowl();
+	//drawGuideRods();
 	
     
 	
 	camera.end();
-	
-}
-
-//--------------------------------------------------------------
-void testApp::update() {
+	ofPopMatrix();
+    ofPopMatrix();
+    /*ofPushStyle();
+    stringstream str;
+    str << "Cam Watcher" << endl;
+    str << "Current Number of Cams: " << 3 << endl;
+    str << "Current Rotation Angle: " << rotationDegrees << endl;
+    str << "Viewing Angle: " << ofToString (nicePicRotate) << " degrees" << endl;
+    str << testRodPos << endl;
+    str << camReportRadius << endl;
     
-	
+    ofSetColor(255, 255, 255, 255);
+    ofDrawBitmapStringHighlight(str.str(), 5,15);
+    ofPopStyle();*/
 }
-
+//--------------------------------------------------------------
+void testApp::update()
+{
+    rotationDegrees = rotationDegrees + 360.0 * rotationHz/20.0;
+	rom1Cam.update(rotationDegrees);
+    rom2Cam.update(rotationDegrees);
+    rom3Cam.update(rotationDegrees);
+    romVCam.update(rotationDegrees);
+}
 //--------------------------------------------------------------
 void testApp::keyPressed(int key) {
-    
+   /*
 	switch(key) {
 		case 'f':
 			ofToggleFullscreen();
@@ -165,68 +192,152 @@ void testApp::keyPressed(int key) {
 		default:
 			break;
 	}
+    */
+}
+//--------------------------------------------------------------
+void testApp::keyReleased(int key)
+{
     
 }
-
 //--------------------------------------------------------------
-void testApp::keyReleased(int key){
-    
-}
-
-//--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y ){
+void testApp::mouseMoved(int x, int y)
+{
 	
 }
-
 //--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button){
+void testApp::mouseDragged(int x, int y, int button)
+{
     
-	if (x > mouseXOld) nicePicRotate = nicePicRotate + 1.5;
+	if (_camRot == true) {
+    if (x > mouseXOld) nicePicRotate = nicePicRotate + 1.5;
 	if (x < mouseXOld) nicePicRotate = nicePicRotate - 1.5;
 	mouseXOld = x;
+    }
+    else
+    {
+        
+    }
 }
-
 //--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button){
-    
-    
+void testApp::mousePressed(int x, int y, int button)
+{
     
     
 }
-
 //--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button){
+void testApp::mouseReleased(int x, int y, int button)
+{
     
 }
-
 //--------------------------------------------------------------
-void testApp::windowResized(int w, int h){
+void testApp::windowResized(int w, int h)
+{
     
 }
-
 //--------------------------------------------------------------
-void testApp::gotMessage(ofMessage msg){
+void testApp::gotMessage(ofMessage msg)
+{
     
 }
-
 //--------------------------------------------------------------
-void testApp::dragEvent(ofDragInfo dragInfo){
+void testApp::dragEvent(ofDragInfo dragInfo)
+{
     
     
 }
+//--------------------------------------------------------------
+void testApp::setupGUI()
+{
+    gui = new ofxUICanvas(0,38,800,800);
+    gui->setName("Default");
+    gui->setTheme(OFX_UI_THEME_HAYLOCK);
+    gui->addWidgetDown(new ofxUILabel("Default", OFX_UI_FONT_LARGE));
+    gui->addWidgetDown(new ofxUILabelToggle("Use Camera",false,LENGTH/2,30,OFX_UI_FONT_SMALL));
+    gui->addWidgetRight(new ofxUILabelToggle("Stop Camera",false,LENGTH/2,30,OFX_UI_FONT_SMALL));
+    gui->addWidgetRight(new ofxUILabelButton("Reset Camera",false,LENGTH/2,30,OFX_UI_FONT_SMALL));
+    gui->addWidgetDown(new ofxUILabelToggle("Hide Preview",true,LENGTH,30,OFX_UI_FONT_SMALL));
+    gui->addWidgetDown(new ofxUILabelToggle("Hide Live",true,LENGTH,30,OFX_UI_FONT_SMALL));
+    gui->addWidgetDown(new ofxUILabel("Play Speed Millis", OFX_UI_FONT_SMALL));
+    gui->addWidgetRight(new ofxUINumberDialer(0, 2, 0.010, 3, "ROT_SPEED", OFX_UI_FONT_MEDIUM));
+    ofAddListener(gui->newGUIEvent,this, &testApp::guiEvent);
+    gui->autoSizeToFitWidgets();
+    gui->setVisible(true);
+    
+    guiImport = new ofxUICanvas(0,38,800,800);
+    guiImport->setName("Import");
+    guiImport->setTheme(OFX_UI_THEME_HAYLOCK);
+    guiImport->addWidgetDown(new ofxUILabel("Import", OFX_UI_FONT_LARGE));
+    ofAddListener(guiImport->newGUIEvent,this, &testApp::guiEvent);
+    guiImport->autoSizeToFitWidgets();
+    guiImport->setVisible(false);
+    
+    guiTab = new ofxUITabBar();
+    guiTab->setTheme(OFX_UI_THEME_HAYLOCK);
+    guiTab->setWidth(ofGetWidth());
+    guiTab->setHeight(30);
+    guiTab->addWidgetRight(new ofxUILabel("Cam Visualisation",OFX_UI_FONT_LARGE));
+    guiTab->addFPS(OFX_UI_FONT_LARGE);
+    guiTab->addCanvas(gui);
+    guiTab->addCanvas(guiImport);
 
-
-
+    ofAddListener(guiTab->newGUIEvent, this, &testApp::guiEvent);
+    
+}
+//--------------------------------------------------------------
+void testApp::guiEvent(ofxUIEventArgs &e)
+{
+    cout << e.getName() << endl;
+    if (e.getName() == "Import")
+    {
+        ofxUILabelToggle *toggle = (ofxUILabelToggle *) e.widget;
+        guiImport->setVisible(toggle->getValue());
+    }
+    else if(e.getName() == "Default")
+    {
+        ofxUILabelToggle *toggle = (ofxUILabelToggle *) e.widget;
+        gui->setVisible(toggle->getValue());
+    }
+    else if (e.getName() == "Use Camera")
+    {
+        ofxUILabelToggle * toggle = (ofxUILabelToggle *) e.widget;
+        _camRot= toggle->getValue();
+    }
+    else if (e.getName() == "Stop Camera")
+    {
+        ofxUILabelToggle * toggle = (ofxUILabelToggle *) e.widget;
+        _camRot= toggle->getValue();
+    }
+    else if (e.getName() == "Reset Camera")
+    {
+        ofxUILabelToggle * toggle = (ofxUILabelToggle *) e.widget;
+        _camRot= toggle->getValue();
+    }
+    else if (e.getName() == "Hide Preview")
+    {
+        ofxUILabelToggle * toggle = (ofxUILabelToggle *) e.widget;
+  
+    }
+    else if (e.getName() == "Hide Live")
+    {
+        ofxUILabelToggle * toggle = (ofxUILabelToggle *) e.widget;
+        
+    }
+    else if (e.getName() == "ROT_SPEED")
+    {
+        ofxUINumberDialer * dial = (ofxUINumberDialer *) e.widget;
+        rotationHz = dial->getValue();
+    }
+}
 
 //Draw the centre cam axle
 //This runs along y=camCentreOriginY, z = 0
-void testApp::drawCentreCamAxle(){
-	
+void testApp::drawCentreCamAxle()
+{
 	ofSetColor(axleColour);
 	centreAxle.set(6.0, ofGetWidth()-100.0); //radius and height
 	
 	ofPushMatrix();
-    ofTranslate((ofGetWidth() -100) * 0.5, camCentreOriginY, camCentreOriginZ);//move pivot to centre of shape
+    ofTranslate((ofGetWidth() -100) * 0.5, rom1CamCentreOrigin.y, rom1CamCentreOrigin.z);//move pivot to centre of shape
     ofRotateZ(90.0);//rotate from centre
     centreAxle.draw();
 	ofPopMatrix();
@@ -241,13 +352,13 @@ void testApp::drawFrontCamAxle(){
 	frontAxle.set(6.0, ofGetWidth()-100.0); //radius and height
 	
 	ofPushMatrix();
-	ofTranslate((ofGetWidth() -100) * 0.5, camFROriginY, camFROriginZ);//move pivot to centre of shape
+	ofTranslate((ofGetWidth() -100) * 0.5, rom2CamCentreOrigin.y, rom2CamCentreOrigin.z);//move pivot to centre of shape
 	ofRotateZ(90.0);//rotate from centre
 	frontAxle.draw();
 	ofPopMatrix();
 }
 //This runs along y=camFLOriginY, z = 0
-void testApp::drawGuideRods(){
+/*void testApp::drawGuideRods(){
 	
 	guideRod.set(6.0, 50.0); //radius and height
 	
@@ -255,7 +366,7 @@ void testApp::drawGuideRods(){
 	//Draw guide rod for centre cam
 	ofSetColor(camCentreColour.r,camCentreColour.g, camCentreColour.b, 60.0);
 	ofPushMatrix();
-    ofTranslate(camCentreOriginX, camCentreOriginY - 300.0, camCentreOriginZ);//move pivot to centre of shape
+    ofTranslate(camCentreOrigin.x, camCentreOrigin.y - 300.0, camCentreOrigin.z);//move pivot to centre of shape
     guideRod.draw();
 	ofPopMatrix();
 	
@@ -282,7 +393,7 @@ void testApp::drawGuideRods(){
 	
 	
 }
-
+*/
 
 //Draw the front cam axle
 //This runs along y=camFLOriginY, z = 0
@@ -354,35 +465,33 @@ void testApp::drawFCCam(){
 }
 
 
-//Draw and rotate all the cams
+/*Draw and rotate all the cams
 void testApp::drawCentreCam(){
 	
 	rotationDegrees = rotationDegrees + 360.0 * rotationHz/20.0;
-	
-	
 	//Centre cam
 	ofSetColor(camCentreColour);
 	ofPushMatrix();
+    
     ofTranslate(camCentreOriginX, camCentreOriginY, camCentreOriginZ);//move pivot to centre of shape
     ofRotateX(rotationDegrees);//rotate from centre
     ofRotateY(90.0);
+    //ofRotateX(180);
     ofTranslate(-camCentreOriginX, -camCentreOriginY, -camCentreOriginZ);//move pivot to centre of shape
+    
+    ofScale(1,1,1);
     camCentreVisMesh.draw();
-	ofPopMatrix();
 	
-	
+    ofPopMatrix();
 }
-
+*/
 
 //Draw the bowl
 void testApp::drawBowl(){
 	
-	
 	//Bowl bass
     ofDrawBitmapString("push rod: " + ofToString(pushRodTop), 5, 65);
 	ofPushMatrix();
-	
-    
 	
 	//ofTranslate(bowlOriginX, camCentreRadius, bowlOriginZ);//move pivot to centre of shape
 	ofTranslate(0, pushRodTop, 0);//move pivot to centre of shape
@@ -398,7 +507,7 @@ void testApp::drawBowl(){
 	
 }
 
-
+/*
 void testApp::drawPushRods(){
 	
 	//Find the point on the cam that's active
@@ -407,18 +516,23 @@ void testApp::drawPushRods(){
 	if (indexToFind < 0) indexToFind = indexToFind + testPoints;
 	ofDrawBitmapString("Cam rotation: " + ofToString(angleToFind), 5, 45);
     
+    //Find the point on the cam that's active
+	float tangleToFind = fmod(270.0 - rotationDegrees, 360.0);
+	int tindexToFind = (int)( (tangleToFind * (1.0 * camPts.size())/360.0)) - 1;
+	if (tindexToFind < 0) tindexToFind = tindexToFind + camPts.size();
+    
 	
 	//Draw the centre push rod
 	ofSetColor(pushRodColour);
-	float camRadius = dataPointCentre[indexToFind];
+	float camRadiuss = dataPointCentre[tindexToFind];
 	pushRodCentre.set(pushRodRadius, pushRodHeight); //radius an height
-	pushRodCentre.setPosition(camCentreOriginX, camCentreOriginY - (0.5 * pushRodHeight) - camRadius, camCentreOriginZ);
+	pushRodCentre.setPosition(camCentreOriginX, camCentreOriginY - (0.5 * pushRodHeight) - camRadiuss, camCentreOriginZ);
 	pushRodCentre.draw();
-	pushRodTop = camCentreOriginY - pushRodHeight - camRadius;
-    
+	pushRodTop = camCentreOriginY - pushRodHeight - camRadiuss;
+    testRodPos = ofToString(pushRodTop) + " " + ofToString(camRadiuss);
 	
 	//Draw FR pushrod
-	camRadius = dataPointFR[indexToFind];
+	float camRadius = dataPointFR[indexToFind];
 	pushRodFR.set(pushRodRadius, pushRodHeight); //radius an height
 	pushRodFR.setPosition(camFROriginX, camFROriginY - (0.5 * pushRodHeight) - camRadius, camFROriginZ);
 	pushRodFR.draw();
@@ -430,7 +544,7 @@ void testApp::drawPushRods(){
 	pushRodFL.setPosition(camFLOriginX, camFLOriginY - (0.5 * pushRodHeight) - camRadius, camFLOriginZ);
 	pushRodFL.draw();
 	pushRodTop = camFROriginY - pushRodHeight - camRadius;
-	
+	camReportRadius = ofToString(camRadius);
 	
 	//Draw FC pushrod
 	float pushRodFCHeight = pushRodHeight - 120.0;
@@ -441,7 +555,7 @@ void testApp::drawPushRods(){
 	pushRodFC.draw();
 	pushRodTop = camFCOriginY - pushRodFCHeight - camRadius;
 }
-
+*/
 
 
 
@@ -538,28 +652,28 @@ void testApp::designBowl(){
 }
 
 
-
-//Design the FL cam
-void testApp::designCentreCam(){
-	
-	
-	//work out the value of each dataPointFL
-	for (int i=0; i<testPoints; i++)
+/*Design the FL cam
+void testApp::designCentreCam(vector<ofVec3f> pts)
+{
+    camCentreVisMesh.setMode(OF_PRIMITIVE_TRIANGLE_FAN);
+    //work out the value of each dataPointFL
+	for (int i=0; i<pts.size(); i++)
 	{
-		float camAmplitude = (coreWidth + 0.5 * maxAmplitude *
-                              (1.0 + sin(2.0 * (1.0 *i) * M_PI * testPoints * 0.000123)));
-		dataPointCentre[i] = camAmplitude;
+		//float camAmplitude = (coreWidth + 0.5 * maxAmplitude *
+						//	  (1.0 + sin(2.0 * (1.0 *pts[i].x) * M_PI * pts.size() * 0.0001)));
+        
+		dataPointCentre[i] = pts[i].z;
+    
+		//float angle = (1.0 * i) * (2.0 * M_PI)/(1.0 * pts.size());
+		//float camX = camCentreOriginX + (camAmplitude * cos(angle));
+		//float camY = camCentreOriginY + (camAmplitude * sin(angle));
+		//float camZ = camCentreOriginZ;
 		
-		float angle = (1.0 * i) * (2.0 * M_PI)/(1.0 * testPoints);
-		float camX = camCentreOriginX + (camAmplitude * cos(angle));
-		float camY = camCentreOriginY + (camAmplitude * sin(angle));
-		float camZ = camCentreOriginZ;
-		
-		ofVec3f thisPoint(camX, camY, camZ);
-		dataVectorCentre[i]=thisPoint;
+		//ofVec3f thisPoint(camX, camY, camZ);
+		//dataVectorCentre[i] = thisPoint;
 		
 		//making the simple cut mesh
-		camCentreCutMesh.addVertex(thisPoint);
+		//camCentreCutMesh.addVertex(thisPoint);
 	}
 	
 	
@@ -570,24 +684,24 @@ void testApp::designCentreCam(){
 	
 	
 	//now draw the cam triangle by triangle
-	for (int i=0; i<testPoints; i++)
+	for (int i=0; i<pts.size(); i++)
 	{
+        dataVectorCentre[i] = ofVec3f(pts[i].x,pts[i].y,camCentreOriginZ);
         camCentreVisMesh.addVertex(camCentrePoint);
         
-        
         camCentreVisMesh.addVertex(dataVectorCentre[i]);
-        if (i>0) camCentreVisMesh.addVertex(dataVectorCentre[(i-1)]);
-        else camCentreVisMesh.addVertex(dataVectorCentre[testPoints-1]);
+        
+        if (i>0) camCentreVisMesh.addVertex(dataVectorCentre[i-1]);
+        else camCentreVisMesh.addVertex(dataVectorCentre[i
+                                                         ]);
 	}
 	
 	//Then set up the indices for the mesh
 	camCentreVisMesh.setupIndicesAuto();
 	//setNormals(camFLVisMesh);			//Set normals to the surface
-	
-    
-    
-}
 
+}
+*/
 //Design the FR cam
 void testApp::designFRCam(){
 	
@@ -603,7 +717,7 @@ void testApp::designFRCam(){
 							  (1.0 + sin(2.0 * (1.0 *i) * M_PI * testPoints * 0.0001)));
 		
 		
-		dataPointFR[i] = camAmplitude;
+//		/dataPointFR[i] = camAmplitude;
 		
 		float angle = (1.0 * i) * (2.0 * M_PI)/(1.0 * testPoints);
 		float camX = camFROriginX + (camAmplitude * cos(angle));

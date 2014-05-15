@@ -1,0 +1,20 @@
+<Widget>
+    <Kind>17</Kind>
+    <Name>Hide Response Data</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>Hide Preview</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>Hide Live</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>8</Kind>
+    <Name>FRAME_SPEED</Name>
+    <Value>100.000000000</Value>
+</Widget>

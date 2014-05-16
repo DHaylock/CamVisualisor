@@ -1,0 +1,80 @@
+<Widget>
+    <Kind>17</Kind>
+    <Name>Use Camera</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>Auto Camera</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>Draw Bowl</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>Draw Axels</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>Draw Cams</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>Draw Box</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>Draw Lighting</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>8</Kind>
+    <Name>CAM1_R</Name>
+    <Value>159.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>8</Kind>
+    <Name>CAM2_R</Name>
+    <Value>152.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>8</Kind>
+    <Name>CAM3_R</Name>
+    <Value>160.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>8</Kind>
+    <Name>CAM4_R</Name>
+    <Value>113.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>8</Kind>
+    <Name>CAM1_H</Name>
+    <Value>141.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>8</Kind>
+    <Name>CAM2_H</Name>
+    <Value>148.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>8</Kind>
+    <Name>CAM3_H</Name>
+    <Value>140.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>8</Kind>
+    <Name>CAM4_H</Name>
+    <Value>187.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>8</Kind>
+    <Name>ROT_SPEED</Name>
+    <Value>0.199999928</Value>
+</Widget>

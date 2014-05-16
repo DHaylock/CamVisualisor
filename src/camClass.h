@@ -22,10 +22,12 @@ class Cam {
     ~Cam(){     }
     
     //void setup(string absFilePath);//));
-    vector<ofVec3f> setupPts(string absFilePath,ofVec3f pos);
+    void loadCam(string absFilePath,ofVec3f pos);
+    void loadNewCam(string absFilePath,ofVec3f pos);
     void update(float rotationDeg);
     void draw(ofColor c,bool drawRods);
-    float camRadius();
+    void drawCamImage(ofPoint drawHere,ofColor c);
+    ofVec2f whatIsCamRadiusAndPushRodTop();
     
     ofxXmlSettings camCoordsFile;
     vector <ofVec3f> camPts;
@@ -37,7 +39,8 @@ class Cam {
     int importlastTagNumber;
     int importPointCount;
     int importLineCount;
-    
+
+    float camRadius;
     float rotationDegrees;
     float pushRodRadius;
 	float pushRodHeight;

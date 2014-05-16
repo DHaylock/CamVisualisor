@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "ofxUI.h"
 #include "camClass.h"
-//#include "ofxDxfExport.h"
+
 #define MAX_NUM_PTSs 2000
 #define LENGTH 255
 
@@ -13,6 +13,7 @@ public:
 	void setup();
 	void update();
 	void draw();
+    void exit();
 	
 	void keyPressed(int key);
 	void keyReleased(int key);
@@ -28,6 +29,8 @@ public:
     void setupGUI();
     void guiEvent(ofxUIEventArgs &e);
     void setupValues();
+    void setupCams();
+    void updateGUIValues();
     string testRodPos;
     string camReportRadius;
     
@@ -35,9 +38,10 @@ public:
     
     ofxUICanvas *gui;
     ofxUITabBar *guiTab;
-    ofxUICanvas *guiImport;
+    ofxUICanvas *guiCams;
     ofxUICanvas *guiCamera;
     
+    ofImage *colorSampler;
     
     Cam rom1Cam;
     Cam rom2Cam;
@@ -49,29 +53,34 @@ public:
     ofVec3f rom3CamCentreOrigin;
     ofVec3f romVCamCentreOrigin;
     
+    float camRotAngle;
+    float increaseAngleBy;
+    
     bool _camRot;
+    bool _drawBowl;
+    bool _drawAxels;
+    bool _drawBox;
+    bool _drawCams;
+    bool _resetCamera;
+    bool _useCamera;
+    bool _AutoCamera;
+    bool _lighting;
+    bool _importNewCam1;
+    bool _importNewCam2;
+    bool _importNewCam3;
+    bool _importNewCam4;
+    
+    ofColor rom1CamCol;
+    ofColor rom2CamCol;
+    ofColor rom3CamCol;
+    ofColor romVCamCol;
     
     // Sarah's Methods
     void turnMainCam();
 	void drawCentreCamAxle();
 	void drawFrontCamAxle();
 	void drawBackCamAxle();
-	void drawCams();
-	void drawCentreCam();
-	void drawFRCam();
-	void drawFLCam();
-	void drawFCCam();
-	void drawGuideRods();
-	void drawPushRods();
 	void drawBowl();
-    
-    
-	
-	void designCentreCam(vector<ofVec3f>pts);
-	void designFRCam();
-	void designFLCam();
-	void designFCCam();
-	void designCamBR();
 	void designBowl();
     
 	ofLight niceLight;
@@ -100,61 +109,13 @@ public:
 	float bowlOriginX;
 	float bowlOriginY;
 	float bowlOriginZ;
-	
-   
-    
-	/*Data points and meshes for cams
-	ofMesh camCentreVisMesh;
-	ofMesh camCentreCutMesh;
-	float dataPointCentre[MAX_NUM_PTSs]; //the data point (i.e. amplitude)
-	ofVec3f dataVectorCentre[MAX_NUM_PTSs]; //the data point as an x, y, z vector
-	float camCentreOriginX;
-	float camCentreOriginY;
-	float camCentreOriginZ;
-    */
-	
-	ofMesh camFRVisMesh;
-	ofMesh camFRCutMesh;
-	float dataPointFR[MAX_NUM_PTSs]; //the data point (i.e. amplitude)
-	ofVec3f dataVectorFR[MAX_NUM_PTSs]; //the data point as an x, y, z vector
-	float camFROriginX;
-	float camFROriginY;
-	float camFROriginZ;
-	
-	ofMesh camFLVisMesh;
-	ofMesh camFLCutMesh;
-	float dataPointFL[MAX_NUM_PTSs]; //the data point (i.e. amplitude)
-	ofVec3f dataVectorFL[MAX_NUM_PTSs]; //the data point as an x, y, z vector
-	float camFLOriginX;
-	float camFLOriginY;
-	float camFLOriginZ;
-	
-	ofMesh camFCVisMesh;
-	ofMesh camFCCutMesh;
-	float dataPointFC[MAX_NUM_PTSs]; //the data point (i.e. amplitude)
-	ofVec3f dataVectorFC[MAX_NUM_PTSs]; //the data point as an x, y, z vector
-	float camFCOriginX;
-	float camFCOriginY;
-	float camFCOriginZ;
-	
-	ofMesh camBRVisMesh;
-	ofMesh camBRCutMesh;
-	float dataPointBR[MAX_NUM_PTSs]; //the data point (i.e. amplitude)
-	ofVec3f dataVectorBR[MAX_NUM_PTSs]; //the data point as an x, y, z vector
-	float camBROriginX;
-	float camBROriginY;
-	float camBROriginZ;
-	
+
 	ofImage cogSurface;
 	
 	ofCylinderPrimitive centreAxle;
 	ofCylinderPrimitive frontAxle;
 	ofCylinderPrimitive camBackAxle;
-	ofCylinderPrimitive guideRod;
-	ofCylinderPrimitive pushRodCentre;
-	ofCylinderPrimitive pushRodFR;
-	ofCylinderPrimitive pushRodFL;
-	ofCylinderPrimitive pushRodFC;
+	;
 	
 	float camAmpOld;
 	int bowlCorners;

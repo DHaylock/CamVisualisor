@@ -1,0 +1,80 @@
+<Widget>
+    <Kind>28</Kind>
+    <Name>CAM1_COL</Name>
+    <XValue>0.811023593</XValue>
+    <YValue>0.417322844</YValue>
+    <RColor>255</RColor>
+    <GColor>69</GColor>
+    <BColor>135</BColor>
+    <AColor>255</AColor>
+</Widget>
+<Widget>
+    <Kind>28</Kind>
+    <Name>CAM2_COL</Name>
+    <XValue>0.708661437</XValue>
+    <YValue>0.551181078</YValue>
+    <RColor>212</RColor>
+    <GColor>34</GColor>
+    <BColor>0</BColor>
+    <AColor>255</AColor>
+</Widget>
+<Widget>
+    <Kind>28</Kind>
+    <Name>CAM3_COL</Name>
+    <XValue>0.472440958</XValue>
+    <YValue>0.267716527</YValue>
+    <RColor>104</RColor>
+    <GColor>0</GColor>
+    <BColor>227</BColor>
+    <AColor>255</AColor>
+</Widget>
+<Widget>
+    <Kind>28</Kind>
+    <Name>CAM4_COL</Name>
+    <XValue>0.692913413</XValue>
+    <YValue>0.803149581</YValue>
+    <RColor>255</RColor>
+    <GColor>255</GColor>
+    <BColor>104</BColor>
+    <AColor>255</AColor>
+</Widget>
+<Widget>
+    <Kind>44</Kind>
+    <Name>Cam1Alpha</Name>
+    <Value>214</Value>
+</Widget>
+<Widget>
+    <Kind>44</Kind>
+    <Name>Cam2Alpha</Name>
+    <Value>172</Value>
+</Widget>
+<Widget>
+    <Kind>44</Kind>
+    <Name>Cam3Alpha</Name>
+    <Value>172</Value>
+</Widget>
+<Widget>
+    <Kind>44</Kind>
+    <Name>Cam4Alpha</Name>
+    <Value>172</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>Import New 1</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>Import New 2</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>Import New 3</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>17</Kind>
+    <Name>Import New 4</Name>
+    <Value>0</Value>
+</Widget>

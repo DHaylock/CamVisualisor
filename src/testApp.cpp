@@ -6,7 +6,7 @@ void testApp::setup()
     setupGUI();
     setupValues();
     setupCams();
-    
+    ofSetDataPathRoot("../Resources/data/");
     ofEnableSmoothing();
     ofSetVerticalSync(true);
 	ofBackground(255);

@@ -36,45 +36,45 @@
 <Widget>
     <Kind>8</Kind>
     <Name>CAM1_R</Name>
-    <Value>159.000000000</Value>
+    <Value>119.000000000</Value>
 </Widget>
 <Widget>
     <Kind>8</Kind>
     <Name>CAM2_R</Name>
-    <Value>152.000000000</Value>
+    <Value>124.000000000</Value>
 </Widget>
 <Widget>
     <Kind>8</Kind>
     <Name>CAM3_R</Name>
-    <Value>160.000000000</Value>
+    <Value>116.000000000</Value>
 </Widget>
 <Widget>
     <Kind>8</Kind>
     <Name>CAM4_R</Name>
-    <Value>113.000000000</Value>
+    <Value>135.000000000</Value>
 </Widget>
 <Widget>
     <Kind>8</Kind>
     <Name>CAM1_H</Name>
-    <Value>141.000000000</Value>
+    <Value>181.000000000</Value>
 </Widget>
 <Widget>
     <Kind>8</Kind>
     <Name>CAM2_H</Name>
-    <Value>148.000000000</Value>
+    <Value>176.000000000</Value>
 </Widget>
 <Widget>
     <Kind>8</Kind>
     <Name>CAM3_H</Name>
-    <Value>140.000000000</Value>
+    <Value>184.000000000</Value>
 </Widget>
 <Widget>
     <Kind>8</Kind>
     <Name>CAM4_H</Name>
-    <Value>187.000000000</Value>
+    <Value>165.000000000</Value>
 </Widget>
 <Widget>
     <Kind>8</Kind>
     <Name>ROT_SPEED</Name>
-    <Value>0.199999928</Value>
+    <Value>0.059999906</Value>
 </Widget>
